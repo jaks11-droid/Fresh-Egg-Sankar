@@ -86,7 +86,7 @@
       </form>
 
       <div class="mt-6 text-center border-t border-gray-100 pt-4">
-        <button id="authToggleBtn" onclick="toggleAuthMode()" class="text-sm text-brand-700 hover:underline font-medium">
+        <button id="authToggleBtn" type="button" onclick="toggleAuthMode()" class="text-sm text-brand-700 hover:underline font-medium">
           Belum punya akun? Daftar di sini
         </button>
       </div>
@@ -425,57 +425,82 @@
     // AUTH TOGGLE
     function toggleAuthMode() {
       isSignUpMode = !isSignUpMode;
-      document.getElementById('authTitle').textContent = isSignUpMode ? 'Daftar Akun Baru' : 'Masuk ke Sistem';
-      document.getElementById('authSubmitBtn').textContent = isSignUpMode ? 'Daftar Sekarang' : 'Masuk';
-      document.getElementById('authToggleBtn').textContent = isSignUpMode ? 'Sudah punya akun? Masuk di sini' : 'Belum punya akun? Daftar di sini';
+      const title = document.getElementById('authTitle');
+      const submitBtn = document.getElementById('authSubmitBtn');
+      const toggleBtn = document.getElementById('authToggleBtn');
+
+      if (isSignUpMode) {
+        title.textContent = 'Daftar Akun Baru';
+        submitBtn.textContent = 'Daftar Sekarang';
+        toggleBtn.textContent = 'Sudah punya akun? Masuk di sini';
+      } else {
+        title.textContent = 'Masuk ke Sistem';
+        submitBtn.textContent = 'Masuk';
+        toggleBtn.textContent = 'Belum punya akun? Daftar di sini';
+      }
     }
 
-    // HANDLE AUTH SUBMIT (DENGAN INTEGRASI CLOUD USERS)
+    // HANDLE AUTH SUBMIT (ROBUST LOCAL & CLOUD STORAGE)
     function handleAuthSubmit(e) {
       e.preventDefault();
       const email = document.getElementById('authEmail').value.trim();
       const password = document.getElementById('authPassword').value;
 
       if (!email || !password) {
-        alert('Silakan lengkapi Email dan Kata Sandi.');
+        alert('Silakan masukkan Email dan Kata Sandi.');
         return;
       }
 
-      const submitBtn = document.getElementById('authSubmitBtn');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Memproses...';
+      // Ambil database user tersimpan di browser
+      let registeredUsers = JSON.parse(localStorage.getItem('fresh_egg_users_db') || '[]');
 
       if (isSignUpMode) {
-        // PROSES SIGN UP: Daftarkan ke Cloud Spreadsheet Sheet 'Users'
+        // Cek apakah email sudah terdaftar
+        const existing = registeredUsers.find(u => u.email === email);
+        if (existing) {
+          alert('Email sudah terdaftar! Silakan langsung masuk (Sign In).');
+          isSignUpMode = false;
+          toggleAuthMode();
+          return;
+        }
+
+        // Daftarkan user baru
+        const newUser = { email, password, role: registeredUsers.length === 0 ? 'Admin' : 'User' };
+        registeredUsers.push(newUser);
+        localStorage.setItem('fresh_egg_users_db', JSON.stringify(registeredUsers));
+
+        // Kirim asynchronous ke cloud spreadsheet (tanpa blocking)
         fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'add_user',
-            row: [email, password, 'Pengguna Fresh Egg', 'User', new Date().toISOString()]
+            row: [email, password, 'Pengguna Fresh Egg', newUser.role, new Date().toISOString()]
           })
-        }).then(() => {
-          currentUser = { email: email, role: 'User' };
-          localStorage.setItem('fresh_egg_user', JSON.stringify(currentUser));
-          alert('Pendaftaran akun berhasil!');
-          showApp();
-        }).catch(err => {
-          // Fallback lokal jika jaringan terbatas
-          currentUser = { email: email, role: 'User' };
-          localStorage.setItem('fresh_egg_user', JSON.stringify(currentUser));
-          showApp();
-        }).finally(() => {
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Daftar Sekarang';
-        });
+        }).catch(() => {});
+
+        alert('Pendaftaran berhasil! Anda sekarang masuk ke sistem.');
+        currentUser = { email: newUser.email, role: newUser.role };
+        localStorage.setItem('fresh_egg_user', JSON.stringify(currentUser));
+        showApp();
 
       } else {
-        // PROSES SIGN IN: Verifikasi dengan data users yang ada di cloud / localStorage
-        currentUser = { email: email, role: email.includes('admin') ? 'Admin' : 'User' };
+        // PROSES SIGN IN
+        // Jika belum ada user sama sekali di database lokal, izinkan masuk otomatis sebagai admin/user pertama
+        if (registeredUsers.length === 0) {
+          registeredUsers.push({ email, password, role: 'Admin' });
+          localStorage.setItem('fresh_egg_users_db', JSON.stringify(registeredUsers));
+        }
+
+        const found = registeredUsers.find(u => u.email === email);
+        if (found && found.password !== password) {
+          alert('Kata sandi salah!');
+          return;
+        }
+
+        currentUser = { email: email, role: found ? found.role : 'User' };
         localStorage.setItem('fresh_egg_user', JSON.stringify(currentUser));
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Masuk';
         showApp();
       }
     }
@@ -491,6 +516,7 @@
       document.getElementById('authSection').classList.remove('hidden');
       document.getElementById('appSection').classList.add('hidden');
       document.getElementById('userInfoHeader').classList.add('hidden');
+      document.getElementById('authForm').reset();
     }
 
     function showApp() {
@@ -531,14 +557,13 @@
         .then(res => res.json())
         .then(data => {
           if (Array.isArray(data) && data.length > 1) {
-            parseCloudRows(data.slice(1)); // abaikan header
+            parseCloudRows(data.slice(1));
           } else {
             recordsData = [];
             renderAll();
           }
         })
         .catch(err => {
-          console.warn('Menggunakan penyimpanan lokal cache:', err);
           const cached = localStorage.getItem('fresh_egg_records');
           if (cached) {
             recordsData = JSON.parse(cached);
@@ -641,7 +666,7 @@
         document.getElementById('dailyForm').reset();
         switchTab('dashboard');
         fetchCloudData();
-      }).catch(err => {
+      }).catch(() => {
         alert('Data disimpan secara lokal.');
         fetchCloudData();
       });
@@ -678,4 +703,95 @@
 
       const tbody = document.getElementById('tableBodyHarian');
       if (recordsData.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="p-4 text-center text-gray-400">Belum ada data tercatat
+        tbody.innerHTML = `<tr><td colspan="9" class="p-4 text-center text-gray-400">Belum ada data tercatat. Silakan lakukan input harian.</td></tr>`;
+      } else {
+        tbody.innerHTML = recordsData.slice().reverse().map(r => `
+          <tr class="hover:bg-gray-50 border-b border-gray-100">
+            <td class="p-3 font-medium text-gray-800">${r.tanggal}</td>
+            <td class="p-3">${r.sisaPop.toLocaleString('id-ID')}</td>
+            <td class="p-3 font-semibold text-amber-600">${r.henDay}%</td>
+            <td class="p-3">${r.prodKg} kg</td>
+            <td class="p-3">${r.fcr}</td>
+            <td class="p-3">${r.penjualanKg} kg</td>
+            <td class="p-3 text-emerald-600 font-medium">${formatRupiah(r.uangMasuk)}</td>
+            <td class="p-3 text-red-600 font-medium">${formatRupiah(r.uangKeluar)}</td>
+            <td class="p-3 font-bold ${r.labaHarian >= 0 ? 'text-green-700' : 'text-red-700'}">${formatRupiah(r.labaHarian)}</td>
+          </tr>
+        `).join('');
+      }
+
+      document.getElementById('neracaKas').textContent = formatRupiah(saldo);
+      const estNilaiPakan = lastRec ? lastRec.sisaStokPakan * lastRec.hargaPakan : 0;
+      const estNilaiTelur = lastRec ? lastRec.stokTelurAkhir * (lastRec.hargaJualKg || 25000) : 0;
+      document.getElementById('neracaNilaiPakan').textContent = formatRupiah(estNilaiPakan);
+      document.getElementById('neracaNilaiTelur').textContent = formatRupiah(estNilaiTelur);
+
+      const totalAset = saldo + estNilaiPakan + estNilaiTelur;
+      document.getElementById('neracaTotalAset').textContent = formatRupiah(totalAset);
+      document.getElementById('neracaLaba').textContent = formatRupiah(totalLabaAkumulasi);
+      document.getElementById('neracaTotalEkuitas').textContent = formatRupiah(totalLabaAkumulasi);
+
+      renderCharts();
+    }
+
+    // RENDER CHARTS
+    function renderCharts() {
+      const labels = recordsData.map(r => r.tanggal);
+      const prodData = recordsData.map(r => r.prodKg);
+      const masukData = recordsData.map(r => r.uangMasuk);
+      const keluarData = recordsData.map(r => r.uangKeluar);
+
+      if (chartProduksiInst) chartProduksiInst.destroy();
+      if (chartKeuanganInst) chartKeuanganInst.destroy();
+
+      const ctxP = document.getElementById('chartProduksi').getContext('2d');
+      chartProduksiInst = new Chart(ctxP, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Produksi Telur (Kg)',
+            data: prodData,
+            borderColor: '#ca8a04',
+            backgroundColor: 'rgba(202, 138, 4, 0.1)',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      const ctxK = document.getElementById('chartKeuangan').getContext('2d');
+      chartKeuanganInst = new Chart(ctxK, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            { label: 'Uang Masuk', data: masukData, backgroundColor: '#10b981' },
+            { label: 'Uang Keluar', data: keluarData, backgroundColor: '#ef4444' }
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+    }
+
+    // EXPORT TO EXCEL (.XLSX)
+    function exportToExcel() {
+      if (recordsData.length === 0) {
+        alert('Tidak ada data untuk diekspor.');
+        return;
+      }
+
+      const ws = XLSX.utils.json_to_sheet(recordsData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Laporan Harian");
+      XLSX.writeFile(wb, `Fresh_Egg_sankar_Laporan_${new Date().toISOString().split('T')[0]}.xlsx`);
+    }
+
+    // HELPER: FORMAT CURRENCY RUPIAH
+    function formatRupiah(val) {
+      return 'Rp ' + (val || 0).toLocaleString('id-ID');
+    }
+  </script>
+</body>
+</html>
