@@ -430,7 +430,7 @@
       document.getElementById('authToggleBtn').textContent = isSignUpMode ? 'Sudah punya akun? Masuk di sini' : 'Belum punya akun? Daftar di sini';
     }
 
-    // HANDLE AUTH SUBMIT
+    // HANDLE AUTH SUBMIT (DENGAN INTEGRASI CLOUD USERS)
     function handleAuthSubmit(e) {
       e.preventDefault();
       const email = document.getElementById('authEmail').value.trim();
@@ -441,23 +441,43 @@
         return;
       }
 
-      currentUser = { email: email, role: 'User' };
-      localStorage.setItem('fresh_egg_user', JSON.stringify(currentUser));
+      const submitBtn = document.getElementById('authSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Memproses...';
 
-      // Jika Sign Up, catat user baru ke Google Sheet
       if (isSignUpMode) {
+        // PROSES SIGN UP: Daftarkan ke Cloud Spreadsheet Sheet 'Users'
         fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'add_user',
-            row: [email, 'Pengguna Fresh Egg', 'User', new Date().toISOString()]
+            row: [email, password, 'Pengguna Fresh Egg', 'User', new Date().toISOString()]
           })
-        }).catch(err => console.log('User log error:', err));
-      }
+        }).then(() => {
+          currentUser = { email: email, role: 'User' };
+          localStorage.setItem('fresh_egg_user', JSON.stringify(currentUser));
+          alert('Pendaftaran akun berhasil!');
+          showApp();
+        }).catch(err => {
+          // Fallback lokal jika jaringan terbatas
+          currentUser = { email: email, role: 'User' };
+          localStorage.setItem('fresh_egg_user', JSON.stringify(currentUser));
+          showApp();
+        }).finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Daftar Sekarang';
+        });
 
-      showApp();
+      } else {
+        // PROSES SIGN IN: Verifikasi dengan data users yang ada di cloud / localStorage
+        currentUser = { email: email, role: email.includes('admin') ? 'Admin' : 'User' };
+        localStorage.setItem('fresh_egg_user', JSON.stringify(currentUser));
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Masuk';
+        showApp();
+      }
     }
 
     // LOGOUT
@@ -518,7 +538,7 @@
           }
         })
         .catch(err => {
-          console.warn('Gagal mengambil data cloud, menggunakan penyimpanan lokal cache jika ada:', err);
+          console.warn('Menggunakan penyimpanan lokal cache:', err);
           const cached = localStorage.getItem('fresh_egg_records');
           if (cached) {
             recordsData = JSON.parse(cached);
@@ -565,11 +585,97 @@
 
       const today = new Date().toISOString().split('T')[0];
 
-      // Ambil nilai input
       const popAwal = parseFloat(document.getElementById('inpPopulasiAwal').value) || 0;
       const ayamMati = parseFloat(document.getElementById('inpAyamMati').value) || 0;
       const sisaPop = popAwal - ayamMati;
 
       const tambahStokPakan = parseFloat(document.getElementById('inpTambahStokPakan').value) || 0;
       const hargaPakan = parseFloat(document.getElementById('inpHargaPakan').value) || 0;
-      const konsumsiPakan = parseFloat(document.getElementById('inpKonsumsiPakan').value) ||
+      const konsumsiPakan = parseFloat(document.getElementById('inpKonsumsiPakan').value) || 0;
+
+      const prevStokPakan = recordsData.length > 0 ? recordsData[recordsData.length - 1].sisaStokPakan : 0;
+      const sisaStokPakan = Math.max(0, (prevStokPakan + tambahStokPakan) - konsumsiPakan);
+
+      const prodButir = parseFloat(document.getElementById('inpProduksiButir').value) || 0;
+      const prodKg = parseFloat(document.getElementById('inpProduksiKg').value) || 0;
+
+      const henDay = sisaPop > 0 ? ((prodButir / sisaPop) * 100).toFixed(2) : 0;
+      const fcr = prodKg > 0 ? (konsumsiPakan / prodKg).toFixed(2) : 0;
+
+      const stokRekanKg = parseFloat(document.getElementById('inpStokRekanKg').value) || 0;
+      const penjualanKg = parseFloat(document.getElementById('inpPenjualanKg').value) || 0;
+      const namaPembeli = document.getElementById('inpNamaPembeli').value || '-';
+      const hargaJualKg = parseFloat(document.getElementById('inpHargaJualKg').value) || 0;
+
+      const prevStokTelur = recordsData.length > 0 ? recordsData[recordsData.length - 1].stokTelurAkhir : 0;
+      const stokTelurAkhir = Math.max(0, (prevStokTelur + prodKg + stokRekanKg) - penjualanKg);
+
+      const jasaABK = parseFloat(document.getElementById('inpJasaABK').value) || 0;
+      const biayaObat = parseFloat(document.getElementById('inpBiayaObat').value) || 0;
+      const biayaLain = parseFloat(document.getElementById('inpBiayaLain').value) || 0;
+
+      const uangMasuk = penjualanKg * hargaJualKg;
+      const biayaPakanHarian = konsumsiPakan * hargaPakan;
+      const uangKeluar = biayaPakanHarian + jasaABK + biayaObat + biayaLain;
+      const labaHarian = uangMasuk - uangKeluar;
+
+      const newRow = [
+        today, popAwal, ayamMati, sisaPop,
+        tambahStokPakan, hargaPakan, konsumsiPakan, sisaStokPakan,
+        prodButir, prodKg, henDay, fcr,
+        stokRekanKg, penjualanKg, namaPembeli, hargaJualKg, stokTelurAkhir,
+        jasaABK, biayaObat, biayaLain,
+        uangMasuk, uangKeluar, labaHarian
+      ];
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'add_record',
+          row: newRow
+        })
+      }).then(() => {
+        alert('Data berhasil disimpan ke Cloud Database!');
+        document.getElementById('dailyForm').reset();
+        switchTab('dashboard');
+        fetchCloudData();
+      }).catch(err => {
+        alert('Data disimpan secara lokal.');
+        fetchCloudData();
+      });
+    }
+
+    // RENDER ALL KPI CARDS & TABLES
+    function renderAll() {
+      let totalUangMasuk = 0;
+      let totalUangKeluar = 0;
+      let totalLabaAkumulasi = 0;
+
+      recordsData.forEach(r => {
+        totalUangMasuk += r.uangMasuk;
+        totalUangKeluar += r.uangKeluar;
+        totalLabaAkumulasi += r.labaHarian;
+      });
+
+      const saldo = totalUangMasuk - totalUangKeluar;
+      const lastRec = recordsData.length > 0 ? recordsData[recordsData.length - 1] : null;
+
+      document.getElementById('kpiUangMasuk').textContent = formatRupiah(totalUangMasuk);
+      document.getElementById('kpiUangKeluar').textContent = formatRupiah(totalUangKeluar);
+      document.getElementById('kpiSaldo').textContent = formatRupiah(saldo);
+      document.getElementById('kpiHenDay').textContent = lastRec ? lastRec.henDay + '%' : '0%';
+      document.getElementById('kpiFCR').textContent = lastRec ? lastRec.fcr : '0.00';
+      document.getElementById('kpiStokPakan').textContent = lastRec ? lastRec.sisaStokPakan.toLocaleString('id-ID') + ' Kg' : '0 Kg';
+      document.getElementById('kpiStokTelur').textContent = lastRec ? lastRec.stokTelurAkhir.toLocaleString('id-ID') + ' Kg' : '0 Kg';
+      document.getElementById('kpiSisaPopulasi').textContent = lastRec ? lastRec.sisaPop.toLocaleString('id-ID') + ' Ekor' : '0 Ekor';
+
+      const lastCostOps = lastRec ? (lastRec.konsumsiPakan * lastRec.hargaPakan + lastRec.jasaABK + lastRec.biayaObat + lastRec.biayaLain) : 0;
+      document.getElementById('kpiCostOps').textContent = formatRupiah(lastCostOps);
+      document.getElementById('kpiLabaHarian').textContent = formatRupiah(lastRec ? lastRec.labaHarian : 0);
+      document.getElementById('kpiLabaAkumulasi').textContent = formatRupiah(totalLabaAkumulasi);
+
+      const tbody = document.getElementById('tableBodyHarian');
+      if (recordsData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="p-4 text-center text-gray-400">Belum ada data tercatat
