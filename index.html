@@ -34,24 +34,30 @@
     }
   </script>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
 
   <!-- TOP NAVIGATION BAR -->
-  <header class="bg-brand-700 text-white shadow-md sticky top-0 z-50">
+  <header class="bg-gradient-to-r from-brand-800 to-brand-700 text-white shadow-lg sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
       <div class="flex items-center space-x-3">
-        <i class="fa-solid font-bold fa-egg text-2xl text-yellow-300"></i>
-        <span class="font-bold text-xl tracking-wide">Fresh Egg sankar</span>
+        <div class="w-10 h-10 bg-yellow-400 text-brand-900 rounded-xl flex items-center justify-center font-black shadow-inner text-xl">
+          <i class="fa-solid fa-egg"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg tracking-wide leading-tight">Fresh Egg sankar</h1>
+          <p class="text-[10px] text-yellow-200 uppercase tracking-widest font-semibold">Smart Farm Management</p>
+        </div>
       </div>
       
       <!-- User Info & Action -->
-      <div id="userInfoHeader" class="hidden flex items-center space-x-4">
-        <span class="text-xs sm:text-sm bg-brand-800 px-3 py-1 rounded-full border border-yellow-500/30">
-          <i class="fa-solid fa-user text-yellow-300 mr-1"></i>
-          <span id="displayUserEmail">User</span>
-        </span>
-        <button onclick="handleLogout()" class="text-xs sm:text-sm bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-1.5 rounded-lg transition">
-          <i class="fa-solid fa-right-from-bracket mr-1"></i> Keluar
+      <div id="userInfoHeader" class="hidden flex items-center space-x-3">
+        <div class="hidden sm:flex items-center space-x-2 bg-brand-900/60 px-3 py-1.5 rounded-full border border-yellow-500/20 text-xs">
+          <i class="fa-solid fa-user-shield text-yellow-300"></i>
+          <span id="displayUserEmail" class="font-medium text-yellow-100">user@email.com</span>
+        </div>
+        <button onclick="handleLogout()" class="bg-red-600/90 hover:bg-red-600 text-white font-semibold px-3 py-1.5 rounded-lg text-xs shadow transition flex items-center space-x-1">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Keluar</span>
         </button>
       </div>
     </div>
@@ -61,33 +67,33 @@
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
     <!-- AUTH SECTION (SIGN IN / SIGN UP) -->
-    <div id="authSection" class="max-w-md mx-auto my-10 bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
-      <div class="text-center mb-6">
-        <div class="w-16 h-16 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl font-bold">
-          <i class="fa-solid fa-egg"></i>
+    <div id="authSection" class="max-w-md mx-auto my-12 bg-white rounded-2xl shadow-xl border border-slate-200/80 p-8 transition-all">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-brand-50 text-brand-700 rounded-2xl flex items-center justify-center mx-auto mb-3 text-3xl shadow-sm border border-brand-100">
+          <i class="fa-solid fa-feather"></i>
         </div>
-        <h2 class="text-2xl font-bold text-gray-900" id="authTitle">Masuk ke Sistem</h2>
-        <p class="text-sm text-gray-500 mt-1">Sistem Manajemen Peternakan Ayam Petelur</p>
+        <h2 class="text-2xl font-bold text-slate-900" id="authTitle">Masuk ke Sistem</h2>
+        <p class="text-xs text-slate-500 mt-1">Kelola peternakan ayam petelur dengan mudah & akurat</p>
       </div>
 
       <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Email</label>
-          <input type="email" id="authEmail" required class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-sm" placeholder="nama@email.com">
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Email Pengguna</label>
+          <input type="email" id="authEmail" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-sm transition" placeholder="sankar@farm.com">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Kata Sandi</label>
-          <input type="password" id="authPassword" required class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-sm" placeholder="••••••••">
+          <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Kata Sandi</label>
+          <input type="password" id="authPassword" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none text-sm transition" placeholder="••••••••">
         </div>
 
-        <button type="submit" id="authSubmitBtn" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition">
-          Masuk
+        <button type="submit" id="authSubmitBtn" class="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-lg shadow-brand-600/20 transition duration-200">
+          Masuk ke Aplikasi
         </button>
       </form>
 
-      <div class="mt-6 text-center border-t border-gray-100 pt-4">
-        <button id="authToggleBtn" type="button" onclick="toggleAuthMode()" class="text-sm text-brand-700 hover:underline font-medium">
-          Belum punya akun? Daftar di sini
+      <div class="mt-6 text-center border-t border-slate-100 pt-5">
+        <button id="authToggleBtn" type="button" onclick="toggleAuthMode()" class="text-xs font-semibold text-brand-700 hover:text-brand-800 transition">
+          Belum punya akun? <span class="underline">Daftar Akun Baru</span>
         </button>
       </div>
     </div>
@@ -96,26 +102,30 @@
     <div id="appSection" class="hidden space-y-6">
 
       <!-- CLOUD STATUS BANNER -->
-      <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg shadow-sm flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm text-amber-900 space-y-2 sm:space-y-0">
+      <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border-l-4 border-amber-500 p-4 rounded-xl shadow-sm flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm text-amber-900 space-y-2 sm:space-y-0">
         <div class="flex items-center space-x-2">
-          <i class="fa-solid fa-cloud-arrow-up text-amber-600 text-base"></i>
-          <span>Database Terhubung ke Google Sheet Terpusat secara otomatis.</span>
+          <i class="fa-solid fa-cloud-arrow-up text-amber-600 text-base animate-pulse"></i>
+          <span class="font-medium">Terhubung dengan Google Sheet Cloud Server (via doGet/doPost).</span>
         </div>
-        <button onclick="fetchCloudData()" class="self-start sm:self-auto bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-md font-medium text-xs flex items-center space-x-1 transition">
-          <i class="fa-solid fa-rotate mr-1"></i> Refresh Data Cloud
+        <button onclick="fetchCloudData()" class="self-start sm:self-auto bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-lg font-semibold text-xs flex items-center space-x-1 shadow transition">
+          <i class="fa-solid fa-rotate"></i>
+          <span>Sinkronisasi Data</span>
         </button>
       </div>
 
-      <!-- NAVIGATION TABS -->
-      <div class="flex overflow-x-auto border-b border-gray-200 space-x-2 bg-white px-3 pt-2 rounded-t-xl shadow-sm">
-        <button id="tabDashboard" onclick="switchTab('dashboard')" class="tab-btn font-semibold text-sm px-4 py-2.5 border-b-2 border-brand-600 text-brand-700 whitespace-nowrap">
-          <i class="fa-solid fa-chart-line mr-1.5"></i> Dashboard
+      <!-- STREAMLINED SINGLE NAVIGATION BAR (NO DUPLICATES) -->
+      <div class="flex overflow-x-auto border-b border-slate-200 space-x-2 bg-white px-4 pt-3 rounded-2xl shadow-sm">
+        <button id="tabDashboard" onclick="switchTab('dashboard')" class="tab-btn font-bold text-xs sm:text-sm px-5 py-3 border-b-2 border-brand-600 text-brand-700 whitespace-nowrap flex items-center space-x-2 transition">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard Utama</span>
         </button>
-        <button id="tabInput" onclick="switchTab('input')" class="tab-btn font-semibold text-sm px-4 py-2.5 border-b-2 border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap">
-          <i class="fa-solid fa-pen-to-square mr-1.5"></i> Input Harian
+        <button id="tabInput" onclick="switchTab('input')" class="tab-btn font-semibold text-xs sm:text-sm px-5 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap flex items-center space-x-2 transition">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span>Input Record Harian</span>
         </button>
-        <button id="tabFinancial" onclick="switchTab('financial')" class="tab-btn font-semibold text-sm px-4 py-2.5 border-b-2 border-transparent text-gray-500 hover:text-gray-700 whitespace-nowrap">
-          <i class="fa-solid fa-scale-balanced mr-1.5"></i> Neraca & Keuangan
+        <button id="tabFinancial" onclick="switchTab('financial')" class="tab-btn font-semibold text-xs sm:text-sm px-5 py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap flex items-center space-x-2 transition">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <span>Laporan Keuangan & Neraca</span>
         </button>
       </div>
 
@@ -124,67 +134,67 @@
 
         <!-- METRIC CARDS GRID -->
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-emerald-500">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Uang Masuk</p>
-            <p id="kpiUangMasuk" class="text-lg sm:text-xl font-bold text-emerald-600 mt-1">Rp 0</p>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-emerald-500 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Uang Masuk</p>
+            <p id="kpiUangMasuk" class="text-base sm:text-lg font-black text-emerald-600 mt-1">Rp 0</p>
           </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-red-500">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Uang Keluar</p>
-            <p id="kpiUangKeluar" class="text-lg sm:text-xl font-bold text-red-600 mt-1">Rp 0</p>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-red-500 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Uang Keluar</p>
+            <p id="kpiUangKeluar" class="text-base sm:text-lg font-black text-red-600 mt-1">Rp 0</p>
           </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-blue-500">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Saldo Kas</p>
-            <p id="kpiSaldo" class="text-lg sm:text-xl font-bold text-blue-600 mt-1">Rp 0</p>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-blue-500 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Saldo Kas</p>
+            <p id="kpiSaldo" class="text-base sm:text-lg font-black text-blue-600 mt-1">Rp 0</p>
           </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-amber-500">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Hen Day (%)</p>
-            <p id="kpiHenDay" class="text-lg sm:text-xl font-bold text-amber-600 mt-1">0%</p>
-          </div>
-
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-purple-500">
-            <p class="text-xs text-gray-500 font-semibold uppercase">FCR</p>
-            <p id="kpiFCR" class="text-lg sm:text-xl font-bold text-purple-600 mt-1">0.00</p>
-          </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-yellow-600">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Stok Pakan</p>
-            <p id="kpiStokPakan" class="text-lg sm:text-xl font-bold text-gray-800 mt-1">0 Kg</p>
-          </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-indigo-500">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Stok Telur Akumulasi</p>
-            <p id="kpiStokTelur" class="text-lg sm:text-xl font-bold text-gray-800 mt-1">0 Kg</p>
-          </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-teal-500">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Sisa Populasi Ayam</p>
-            <p id="kpiSisaPopulasi" class="text-lg sm:text-xl font-bold text-gray-800 mt-1">0 Ekor</p>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-amber-500 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Hen Day (%)</p>
+            <p id="kpiHenDay" class="text-base sm:text-lg font-black text-amber-600 mt-1">0%</p>
           </div>
 
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-slate-600">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Cost Operasional</p>
-            <p id="kpiCostOps" class="text-lg sm:text-xl font-bold text-slate-700 mt-1">Rp 0</p>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-purple-500 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">FCR</p>
+            <p id="kpiFCR" class="text-base sm:text-lg font-black text-purple-600 mt-1">0.00</p>
           </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-green-600">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Laba Harian (Terakhir)</p>
-            <p id="kpiLabaHarian" class="text-lg sm:text-xl font-bold text-green-700 mt-1">Rp 0</p>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-yellow-600 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Stok Pakan</p>
+            <p id="kpiStokPakan" class="text-base sm:text-lg font-black text-slate-800 mt-1">0 Kg</p>
           </div>
-          <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-brand-600 col-span-2 sm:col-span-1 lg:col-span-2">
-            <p class="text-xs text-gray-500 font-semibold uppercase">Laba Akumulasi Total</p>
-            <p id="kpiLabaAkumulasi" class="text-xl sm:text-2xl font-black text-brand-700 mt-1">Rp 0</p>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-indigo-500 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Stok Telur Akumulasi</p>
+            <p id="kpiStokTelur" class="text-base sm:text-lg font-black text-slate-800 mt-1">0 Kg</p>
+          </div>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-teal-500 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Sisa Populasi</p>
+            <p id="kpiSisaPopulasi" class="text-base sm:text-lg font-black text-slate-800 mt-1">0 Ekor</p>
+          </div>
+
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-slate-600 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Cost Operasional</p>
+            <p id="kpiCostOps" class="text-base sm:text-lg font-black text-slate-700 mt-1">Rp 0</p>
+          </div>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-green-600 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Laba Harian</p>
+            <p id="kpiLabaHarian" class="text-base sm:text-lg font-black text-green-700 mt-1">Rp 0</p>
+          </div>
+          <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200/70 border-l-4 border-l-brand-600 col-span-2 sm:col-span-1 lg:col-span-2 hover:shadow-md transition">
+            <p class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">Laba Akumulasi Total</p>
+            <p id="kpiLabaAkumulasi" class="text-lg sm:text-xl font-black text-brand-700 mt-1">Rp 0</p>
           </div>
         </div>
 
         <!-- CHARTS SECTION -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-sm font-bold text-gray-800 mb-4 flex items-center">
-              <i class="fa-solid fa-chart-area text-amber-500 mr-2"></i> Grafik Produksi Telur (Kg)
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+            <h3 class="text-xs font-bold uppercase text-slate-700 mb-4 flex items-center">
+              <i class="fa-solid fa-chart-area text-amber-500 mr-2 text-base"></i> Grafik Produksi Telur (Kg)
             </h3>
             <div class="h-64">
               <canvas id="chartProduksi"></canvas>
             </div>
           </div>
-          <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-sm font-bold text-gray-800 mb-4 flex items-center">
-              <i class="fa-solid fa-chart-line text-emerald-500 mr-2"></i> Grafik Arus Kas (Uang Masuk vs Keluar)
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80">
+            <h3 class="text-xs font-bold uppercase text-slate-700 mb-4 flex items-center">
+              <i class="fa-solid fa-chart-line text-emerald-500 mr-2 text-base"></i> Arus Kas (Uang Masuk vs Keluar)
             </h3>
             <div class="h-64">
               <canvas id="chartKeuangan"></canvas>
@@ -193,33 +203,33 @@
         </div>
 
         <!-- RECENT DATA TABLE -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div class="p-4 bg-gray-50 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
-            <h3 class="text-sm font-bold text-gray-800 flex items-center">
-              <i class="fa-solid fa-list-check text-brand-600 mr-2"></i> Riwayat Pencatatan Harian
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+          <div class="p-5 bg-slate-50/80 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+            <h3 class="text-xs font-bold uppercase text-slate-700 flex items-center">
+              <i class="fa-solid fa-table-list text-brand-600 mr-2 text-base"></i> Riwayat Pencatatan Harian Peternakan
             </h3>
-            <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 shadow-sm transition">
+            <button onclick="exportToExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-1 shadow transition">
               <i class="fa-solid fa-file-excel mr-1"></i> Unduh Excel (.xlsx)
             </button>
           </div>
           <div class="overflow-x-auto">
-            <table class="w-full text-xs text-left text-gray-600">
-              <thead class="text-xs uppercase bg-gray-100 text-gray-700">
+            <table class="w-full text-xs text-left text-slate-600">
+              <thead class="text-[11px] uppercase bg-slate-100 text-slate-700 tracking-wider">
                 <tr>
-                  <th class="p-3">Tanggal</th>
-                  <th class="p-3">Sisa Populasi</th>
-                  <th class="p-3">Hen Day (%)</th>
-                  <th class="p-3">Produksi (Kg)</th>
-                  <th class="p-3">FCR</th>
-                  <th class="p-3">Penjualan (Kg)</th>
-                  <th class="p-3">Uang Masuk</th>
-                  <th class="p-3">Uang Keluar</th>
-                  <th class="p-3">Laba Harian</th>
+                  <th class="p-3.5">Tanggal</th>
+                  <th class="p-3.5">Sisa Pop</th>
+                  <th class="p-3.5">Hen Day</th>
+                  <th class="p-3.5">Produksi (Kg)</th>
+                  <th class="p-3.5">FCR</th>
+                  <th class="p-3.5">Penjualan</th>
+                  <th class="p-3.5">Uang Masuk</th>
+                  <th class="p-3.5">Uang Keluar</th>
+                  <th class="p-3.5">Laba Harian</th>
                 </tr>
               </thead>
-              <tbody id="tableBodyHarian" class="divide-y divide-gray-100">
+              <tbody id="tableBodyHarian" class="divide-y divide-slate-100">
                 <tr>
-                  <td colspan="9" class="p-4 text-center text-gray-400">Belum ada data tercatat. Silakan lakukan input harian.</td>
+                  <td colspan="9" class="p-6 text-center text-slate-400">Belum ada data tercatat. Silakan isi form harian.</td>
                 </tr>
               </tbody>
             </table>
@@ -229,153 +239,154 @@
       </div>
 
       <!-- VIEW 2: FORM INPUT HARIAN -->
-      <div id="viewInput" class="hidden bg-white p-6 rounded-xl shadow-sm border border-gray-100 max-w-4xl mx-auto">
-        <h2 class="text-lg font-bold text-gray-900 mb-4 border-b border-gray-100 pb-3 flex items-center">
-          <i class="fa-solid fa-pen-field text-brand-600 mr-2"></i> Form Input Operasional Peternakan
+      <div id="viewInput" class="hidden bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 max-w-4xl mx-auto">
+        <h2 class="text-lg font-black text-slate-900 mb-6 border-b border-slate-100 pb-4 flex items-center">
+          <i class="fa-solid fa-pen-to-square text-brand-600 mr-2.5"></i> Form Pencatatan Operasional Harian
         </h2>
 
         <form id="dailyForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
           
-          <!-- SEKSI 1: POPULASI & PAKAN -->
+          <!-- SEKSI 1 -->
           <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-brand-700 bg-brand-50 p-2 rounded mb-3">1. Populasi & Pakan</h3>
+            <h3 class="text-xs font-black uppercase tracking-wider text-brand-800 bg-brand-50 px-3 py-2 rounded-xl mb-4">1. Populasi & Pakan</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Populasi Awal (Ekor)</label>
-                <input type="number" id="inpPopulasiAwal" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500" placeholder="Contoh: 10000">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Populasi Awal (Ekor)</label>
+                <input type="number" id="inpPopulasiAwal" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition" placeholder="Contoh: 10000">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Ayam Mati (Ekor)</label>
-                <input type="number" id="inpAyamMati" value="0" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Ayam Mati (Ekor)</label>
+                <input type="number" id="inpAyamMati" value="0" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Tambah Stok Pakan Baru (Kg)</label>
-                <input type="number" id="inpTambahStokPakan" value="0" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Tambah Stok Pakan (Kg)</label>
+                <input type="number" id="inpTambahStokPakan" value="0" step="0.1" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Update Harga Pakan (Rp/Kg)</label>
-                <input type="number" id="inpHargaPakan" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500" placeholder="Contoh: 8500">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Update Harga Pakan (Rp/Kg)</label>
+                <input type="number" id="inpHargaPakan" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition" placeholder="Contoh: 8500">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Konsumsi Pakan Harian (Kg)</label>
-                <input type="number" id="inpKonsumsiPakan" required step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500" placeholder="Contoh: 1100">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Konsumsi Pakan Harian (Kg)</label>
+                <input type="number" id="inpKonsumsiPakan" required step="0.1" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition" placeholder="Contoh: 1100">
               </div>
             </div>
           </div>
 
-          <!-- SEKSI 2: PRODUKSI & STOK TELUR -->
+          <!-- SEKSI 2 -->
           <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-brand-700 bg-brand-50 p-2 rounded mb-3">2. Produksi & Stok Telur</h3>
+            <h3 class="text-xs font-black uppercase tracking-wider text-brand-800 bg-brand-50 px-3 py-2 rounded-xl mb-4">2. Produksi & Stok Telur</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Hasil Produksi (Butir)</label>
-                <input type="number" id="inpProduksiButir" required class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500" placeholder="Contoh: 8500">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Hasil Produksi (Butir)</label>
+                <input type="number" id="inpProduksiButir" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition" placeholder="Contoh: 8500">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Hasil Produksi (Kg)</label>
-                <input type="number" id="inpProduksiKg" required step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500" placeholder="Contoh: 530">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Hasil Produksi (Kg)</label>
+                <input type="number" id="inpProduksiKg" required step="0.1" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition" placeholder="Contoh: 530">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Stok Telur Tambahan Rekan (Kg)</label>
-                <input type="number" id="inpStokRekanKg" value="0" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Stok Telur Rekan (Kg)</label>
+                <input type="number" id="inpStokRekanKg" value="0" step="0.1" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition">
               </div>
             </div>
           </div>
 
-          <!-- SEKSI 3: PENJUALAN & PEMBELI -->
+          <!-- SEKSI 3 -->
           <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-brand-700 bg-brand-50 p-2 rounded mb-3">3. Penjualan Telur</h3>
+            <h3 class="text-xs font-black uppercase tracking-wider text-brand-800 bg-brand-50 px-3 py-2 rounded-xl mb-4">3. Penjualan Telur</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Nama Pembeli</label>
-                <input type="text" id="inpNamaPembeli" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500" placeholder="Toko Telur Jaya">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Pembeli</label>
+                <input type="text" id="inpNamaPembeli" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition" placeholder="Toko Telur Jaya">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Penjualan Telur (Kg)</label>
-                <input type="number" id="inpPenjualanKg" value="0" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Penjualan Telur (Kg)</label>
+                <input type="number" id="inpPenjualanKg" value="0" step="0.1" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Harga Jual (Rp/Kg)</label>
-                <input type="number" id="inpHargaJualKg" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500" placeholder="Contoh: 27000">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Harga Jual (Rp/Kg)</label>
+                <input type="number" id="inpHargaJualKg" value="0" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition" placeholder="Contoh: 27000">
               </div>
             </div>
           </div>
 
-          <!-- SEKSI 4: BIAYA OPERASIONAL (COST) -->
+          <!-- SEKSI 4 -->
           <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-brand-700 bg-brand-50 p-2 rounded mb-3">4. Biaya Operasional (Cost)</h3>
+            <h3 class="text-xs font-black uppercase tracking-wider text-brand-800 bg-brand-50 px-3 py-2 rounded-xl mb-4">4. Biaya Operasional (Cost)</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Jasa Anak Anak Kandang / ABK (Rp)</label>
-                <input type="number" id="inpJasaABK" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Jasa ABK (Rp)</label>
+                <input type="number" id="inpJasaABK" value="0" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Biaya Vitamin & Obat (Rp)</label>
-                <input type="number" id="inpBiayaObat" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Vitamin & Obat (Rp)</label>
+                <input type="number" id="inpBiayaObat" value="0" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition">
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-700 mb-1">Biaya Lain-lain Kandang (Rp)</label>
-                <input type="number" id="inpBiayaLain" value="0" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500">
+                <label class="block text-xs font-bold text-slate-700 mb-1">Biaya Lain Kandang (Rp)</label>
+                <input type="number" id="inpBiayaLain" value="0" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 transition">
               </div>
             </div>
           </div>
 
-          <div class="pt-4 border-t border-gray-100 flex justify-end">
-            <button type="submit" id="btnSubmitForm" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-2.5 rounded-lg shadow-md transition flex items-center">
-              <i class="fa-solid fa-floppy-disk mr-2"></i> Simpan Record Harian
+          <div class="pt-4 border-t border-slate-100 flex justify-end">
+            <button type="submit" id="btnSubmitForm" class="bg-brand-600 hover:bg-brand-700 text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-brand-600/20 transition flex items-center space-x-2">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>Simpan Record Harian</span>
             </button>
           </div>
         </form>
       </div>
 
-      <!-- VIEW 3: NERACA & LAPORAN KEUANGAN -->
-      <div id="viewFinancial" class="hidden bg-white p-6 rounded-xl shadow-sm border border-gray-100 max-w-4xl mx-auto">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-gray-100 mb-6">
+      <!-- VIEW 3: NERACA & KEUANGAN -->
+      <div id="viewFinancial" class="hidden bg-white p-8 rounded-2xl shadow-sm border border-slate-200/80 max-w-4xl mx-auto">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-5 border-b border-slate-100 mb-6">
           <div>
-            <h2 class="text-lg font-bold text-gray-900">Laporan Keuangan & Neraca Peternakan</h2>
-            <p class="text-xs text-gray-500">Rekap Laba/Rugi dan Posisi Neraca Akumulasi</p>
+            <h2 class="text-lg font-black text-slate-900">Laporan Keuangan & Neraca Peternakan</h2>
+            <p class="text-xs text-slate-500">Rekapitulasi laba rugi dan posisi aset komprehensif</p>
           </div>
-          <button onclick="exportToExcel()" class="mt-2 sm:mt-0 bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1 shadow-sm transition">
-            <i class="fa-solid fa-file-excel mr-1"></i> Cetak / Ekspor Excel
+          <button onclick="exportToExcel()" class="mt-3 sm:mt-0 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-1 shadow transition">
+            <i class="fa-solid fa-file-excel mr-1"></i> Ekspor Laporan Excel
           </button>
         </div>
 
         <div class="space-y-6">
-          <!-- NERACA RINGKASAN -->
-          <div class="border border-gray-200 rounded-xl overflow-hidden">
-            <div class="bg-brand-700 text-white p-3 font-bold text-sm">
-              Laporan Posisi Keuangan (Neraca Akumulasi)
+          <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <div class="bg-brand-700 text-white p-4 font-bold text-sm flex items-center justify-between">
+              <span>Laporan Posisi Keuangan (Neraca Akumulasi)</span>
+              <i class="fa-solid fa-scale-balanced text-yellow-300"></i>
             </div>
-            <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm bg-slate-50/50">
               <!-- ASET -->
-              <div class="space-y-2">
-                <p class="font-bold border-b border-gray-200 pb-1 text-brand-800">ASET (AKTIVA)</p>
-                <div class="flex justify-between text-xs">
+              <div class="space-y-3 bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
+                <p class="font-bold uppercase tracking-wider text-xs border-b border-slate-100 pb-2 text-brand-800">Aset (Aktiva)</p>
+                <div class="flex justify-between text-xs text-slate-600">
                   <span>Kas & Bank (Saldo)</span>
-                  <span id="neracaKas" class="font-semibold">Rp 0</span>
+                  <span id="neracaKas" class="font-bold text-slate-900">Rp 0</span>
                 </div>
-                <div class="flex justify-between text-xs">
-                  <span>Estimasi Nilai Persediaan Pakan</span>
-                  <span id="neracaNilaiPakan" class="font-semibold">Rp 0</span>
+                <div class="flex justify-between text-xs text-slate-600">
+                  <span>Estimasi Persediaan Pakan</span>
+                  <span id="neracaNilaiPakan" class="font-bold text-slate-900">Rp 0</span>
                 </div>
-                <div class="flex justify-between text-xs">
-                  <span>Estimasi Nilai Persediaan Telur</span>
-                  <span id="neracaNilaiTelur" class="font-semibold">Rp 0</span>
+                <div class="flex justify-between text-xs text-slate-600">
+                  <span>Estimasi Persediaan Telur</span>
+                  <span id="neracaNilaiTelur" class="font-bold text-slate-900">Rp 0</span>
                 </div>
-                <div class="flex justify-between font-bold text-sm pt-2 border-t border-gray-100 text-emerald-700">
+                <div class="flex justify-between font-black text-sm pt-3 border-t border-slate-200 text-emerald-700">
                   <span>TOTAL ASET</span>
                   <span id="neracaTotalAset">Rp 0</span>
                 </div>
               </div>
 
-              <!-- KEWAJIBAN & EKUITAS -->
-              <div class="space-y-2">
-                <p class="font-bold border-b border-gray-200 pb-1 text-brand-800">EKUITAS & LABA</p>
-                <div class="flex justify-between text-xs">
-                  <span>Laba Bersih Akumulasi Operasional</span>
-                  <span id="neracaLaba" class="font-semibold">Rp 0</span>
+              <!-- EKUITAS -->
+              <div class="space-y-3 bg-white p-5 rounded-xl border border-slate-200/80 shadow-sm">
+                <p class="font-bold uppercase tracking-wider text-xs border-b border-slate-100 pb-2 text-brand-800">Ekuitas & Laba</p>
+                <div class="flex justify-between text-xs text-slate-600">
+                  <span>Laba Bersih Operasional</span>
+                  <span id="neracaLaba" class="font-bold text-slate-900">Rp 0</span>
                 </div>
-                <div class="flex justify-between font-bold text-sm pt-2 border-t border-gray-100 text-emerald-700">
+                <div class="flex justify-between font-black text-sm pt-3 border-t border-slate-200 text-emerald-700">
                   <span>TOTAL EKUITAS</span>
                   <span id="neracaTotalEkuitas">Rp 0</span>
                 </div>
@@ -390,13 +401,13 @@
 
   </main>
 
-  <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-500 mt-auto">
-    &copy; 2026 <strong>Fresh Egg sankar</strong>. All rights reserved. Terintegrasi Google Spreadsheet Cloud Server.
+  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-auto">
+    &copy; 2026 <strong>Fresh Egg sankar</strong>. All rights reserved. Cloud Database Google Apps Script.
   </footer>
 
   <!-- APPLICATION LOGIC SCRIPT -->
   <script>
-    // GOOGLE APPS SCRIPT ENDPOINT PERMANEN
+    // GOOGLE APPS SCRIPT ENDPOINT PERMANEN (doGet / doPost)
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxI7Fvet6wKAJ-BCAd6Q10xiNsyyJywrC4l8lGYtxcDPAK9XoLc92G3VZNCso6DeJN5pw/exec";
 
     // STATE MANAGEMENT
@@ -406,12 +417,10 @@
     let chartProduksiInst = null;
     let chartKeuanganInst = null;
 
-    // INIT APP
     window.addEventListener('DOMContentLoaded', () => {
       checkStoredUser();
     });
 
-    // CHECK LOGGED IN USER
     function checkStoredUser() {
       const stored = localStorage.getItem('fresh_egg_user');
       if (stored) {
@@ -422,7 +431,6 @@
       }
     }
 
-    // AUTH TOGGLE
     function toggleAuthMode() {
       isSignUpMode = !isSignUpMode;
       const title = document.getElementById('authTitle');
@@ -431,16 +439,15 @@
 
       if (isSignUpMode) {
         title.textContent = 'Daftar Akun Baru';
-        submitBtn.textContent = 'Daftar Sekarang';
-        toggleBtn.textContent = 'Sudah punya akun? Masuk di sini';
+        submitBtn.textContent = 'Daftar & Masuk';
+        toggleBtn.innerHTML = 'Sudah punya akun? <span class="underline">Masuk di sini</span>';
       } else {
         title.textContent = 'Masuk ke Sistem';
-        submitBtn.textContent = 'Masuk';
-        toggleBtn.textContent = 'Belum punya akun? Daftar di sini';
+        submitBtn.textContent = 'Masuk ke Aplikasi';
+        toggleBtn.innerHTML = 'Belum punya akun? <span class="underline">Daftar Akun Baru</span>';
       }
     }
 
-    // HANDLE AUTH SUBMIT (ROBUST LOCAL & CLOUD STORAGE)
     function handleAuthSubmit(e) {
       e.preventDefault();
       const email = document.getElementById('authEmail').value.trim();
@@ -451,25 +458,22 @@
         return;
       }
 
-      // Ambil database user tersimpan di browser
       let registeredUsers = JSON.parse(localStorage.getItem('fresh_egg_users_db') || '[]');
 
       if (isSignUpMode) {
-        // Cek apakah email sudah terdaftar
         const existing = registeredUsers.find(u => u.email === email);
         if (existing) {
-          alert('Email sudah terdaftar! Silakan langsung masuk (Sign In).');
+          alert('Email sudah terdaftar! Silakan langsung masuk.');
           isSignUpMode = false;
           toggleAuthMode();
           return;
         }
 
-        // Daftarkan user baru
         const newUser = { email, password, role: registeredUsers.length === 0 ? 'Admin' : 'User' };
         registeredUsers.push(newUser);
         localStorage.setItem('fresh_egg_users_db', JSON.stringify(registeredUsers));
 
-        // Kirim asynchronous ke cloud spreadsheet (tanpa blocking)
+        // Kirim via doPost ke Google Spreadsheet
         fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
@@ -480,14 +484,11 @@
           })
         }).catch(() => {});
 
-        alert('Pendaftaran berhasil! Anda sekarang masuk ke sistem.');
+        alert('Pendaftaran berhasil!');
         currentUser = { email: newUser.email, role: newUser.role };
         localStorage.setItem('fresh_egg_user', JSON.stringify(currentUser));
         showApp();
-
       } else {
-        // PROSES SIGN IN
-        // Jika belum ada user sama sekali di database lokal, izinkan masuk otomatis sebagai admin/user pertama
         if (registeredUsers.length === 0) {
           registeredUsers.push({ email, password, role: 'Admin' });
           localStorage.setItem('fresh_egg_users_db', JSON.stringify(registeredUsers));
@@ -505,7 +506,6 @@
       }
     }
 
-    // LOGOUT
     function handleLogout() {
       localStorage.removeItem('fresh_egg_user');
       currentUser = null;
@@ -528,11 +528,10 @@
       fetchCloudData();
     }
 
-    // SWITCH TAB NAVIGATION
     function switchTab(tabName) {
       document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.classList.remove('border-brand-600', 'text-brand-700');
-        btn.classList.add('border-transparent', 'text-gray-500');
+        btn.classList.add('border-transparent', 'text-slate-500');
       });
 
       document.getElementById('viewDashboard').classList.add('hidden');
@@ -551,7 +550,7 @@
       }
     }
 
-    // FETCH DATA FROM GOOGLE APPS SCRIPT CLOUD
+    // doGet API Fetch
     function fetchCloudData() {
       fetch(`${SCRIPT_URL}?action=get_data`)
         .then(res => res.json())
@@ -563,7 +562,7 @@
             renderAll();
           }
         })
-        .catch(err => {
+        .catch(() => {
           const cached = localStorage.getItem('fresh_egg_records');
           if (cached) {
             recordsData = JSON.parse(cached);
@@ -572,7 +571,6 @@
         });
     }
 
-    // PARSE DATA ROWS FROM SPREADSHEET
     function parseCloudRows(rows) {
       recordsData = rows.map(r => ({
         tanggal: r[0],
@@ -604,7 +602,7 @@
       renderAll();
     }
 
-    // SUBMIT NEW DAILY RECORD
+    // doPost Form Submission
     function handleFormSubmit(e) {
       e.preventDefault();
 
@@ -672,7 +670,6 @@
       });
     }
 
-    // RENDER ALL KPI CARDS & TABLES
     function renderAll() {
       let totalUangMasuk = 0;
       let totalUangKeluar = 0;
@@ -703,19 +700,19 @@
 
       const tbody = document.getElementById('tableBodyHarian');
       if (recordsData.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="p-4 text-center text-gray-400">Belum ada data tercatat. Silakan lakukan input harian.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" class="p-6 text-center text-slate-400">Belum ada data tercatat. Silakan lakukan input harian.</td></tr>`;
       } else {
         tbody.innerHTML = recordsData.slice().reverse().map(r => `
-          <tr class="hover:bg-gray-50 border-b border-gray-100">
-            <td class="p-3 font-medium text-gray-800">${r.tanggal}</td>
-            <td class="p-3">${r.sisaPop.toLocaleString('id-ID')}</td>
-            <td class="p-3 font-semibold text-amber-600">${r.henDay}%</td>
-            <td class="p-3">${r.prodKg} kg</td>
-            <td class="p-3">${r.fcr}</td>
-            <td class="p-3">${r.penjualanKg} kg</td>
-            <td class="p-3 text-emerald-600 font-medium">${formatRupiah(r.uangMasuk)}</td>
-            <td class="p-3 text-red-600 font-medium">${formatRupiah(r.uangKeluar)}</td>
-            <td class="p-3 font-bold ${r.labaHarian >= 0 ? 'text-green-700' : 'text-red-700'}">${formatRupiah(r.labaHarian)}</td>
+          <tr class="hover:bg-slate-50 border-b border-slate-100 transition">
+            <td class="p-3.5 font-semibold text-slate-800">${r.tanggal}</td>
+            <td class="p-3.5">${r.sisaPop.toLocaleString('id-ID')}</td>
+            <td class="p-3.5 font-bold text-amber-600">${r.henDay}%</td>
+            <td class="p-3.5">${r.prodKg} kg</td>
+            <td class="p-3.5">${r.fcr}</td>
+            <td class="p-3.5">${r.penjualanKg} kg</td>
+            <td class="p-3.5 text-emerald-600 font-bold">${formatRupiah(r.uangMasuk)}</td>
+            <td class="p-3.5 text-red-600 font-bold">${formatRupiah(r.uangKeluar)}</td>
+            <td class="p-3.5 font-black ${r.labaHarian >= 0 ? 'text-green-700' : 'text-red-700'}">${formatRupiah(r.labaHarian)}</td>
           </tr>
         `).join('');
       }
@@ -734,7 +731,6 @@
       renderCharts();
     }
 
-    // RENDER CHARTS
     function renderCharts() {
       const labels = recordsData.map(r => r.tanggal);
       const prodData = recordsData.map(r => r.prodKg);
@@ -755,7 +751,8 @@
             borderColor: '#ca8a04',
             backgroundColor: 'rgba(202, 138, 4, 0.1)',
             fill: true,
-            tension: 0.3
+            tension: 0.3,
+            borderWidth: 3
           }]
         },
         options: { responsive: true, maintainAspectRatio: false }
@@ -767,15 +764,14 @@
         data: {
           labels: labels,
           datasets: [
-            { label: 'Uang Masuk', data: masukData, backgroundColor: '#10b981' },
-            { label: 'Uang Keluar', data: keluarData, backgroundColor: '#ef4444' }
+            { label: 'Uang Masuk', data: masukData, backgroundColor: '#10b981', borderRadius: 4 },
+            { label: 'Uang Keluar', data: keluarData, backgroundColor: '#ef4444', borderRadius: 4 }
           ]
         },
         options: { responsive: true, maintainAspectRatio: false }
       });
     }
 
-    // EXPORT TO EXCEL (.XLSX)
     function exportToExcel() {
       if (recordsData.length === 0) {
         alert('Tidak ada data untuk diekspor.');
@@ -788,7 +784,6 @@
       XLSX.writeFile(wb, `Fresh_Egg_sankar_Laporan_${new Date().toISOString().split('T')[0]}.xlsx`);
     }
 
-    // HELPER: FORMAT CURRENCY RUPIAH
     function formatRupiah(val) {
       return 'Rp ' + (val || 0).toLocaleString('id-ID');
     }
